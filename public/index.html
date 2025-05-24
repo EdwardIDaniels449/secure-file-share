@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure File Share</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #174ea6;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f5f5f5;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #fff;
+      width: 420px;
+      padding: 2rem 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.75rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #202124;
+    }
+    p.desc {
+      color: #5f6368;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.15s ease;
+    }
+    .file-label:hover {
+      background: var(--primary-dark);
+    }
+    .settings {
+      margin-top: 1.5rem;
+      text-align: left;
+      color: #202124;
+    }
+    .settings label {
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .settings input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    #uploadBtn {
+      margin-top: 1.5rem;
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    #uploadBtn:hover {
+      background: var(--primary-dark);
+    }
+    #linkContainer {
+      margin-top: 1.5rem;
+      word-break: break-all;
+      color: #202124;
+      background: #e8f0fe;
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .bg-graphic {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative background icon -->
+  <svg class="bg-graphic" width="400" height="400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 8H16V6C16 3.79 14.21 2 12 2C9.79 2 8 3.79 8 6V8H7C5.9 8 5 8.9 5 10V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V10C19 8.9 18.1 8 17 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM9.1 8V6C9.1 4.84 10.04 3.9 11.2 3.9C12.36 3.9 13.3 4.84 13.3 6V8H9.1Z" fill="#e0e0e0"/>
+  </svg>
+
+  <div class="card">
+    <h1>Secure File Share</h1>
+    <p class="desc">Select files or a whole folder to encrypt and share privately. Configure how long the link remains valid and how many times it can be used.</p>
+
+    <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+      <label class="file-label" for="fileInput">Choose File(s)</label>
+      <label class="file-label" for="folderInput">Choose Folder</label>
+    </div>
+
+    <input type="file" id="fileInput" multiple />
+    <input type="file" id="folderInput" webkitdirectory />
+
+    <div class="settings">
+      <label>
+        Expires in (minutes):
+        <input type="number" id="expires" min="1" value="60" />
+      </label>
+
+      <label>
+        Max downloads:
+        <input type="number" id="maxDownloads" min="1" value="5" />
+      </label>
+    </div>
+
+    <button id="uploadBtn">Encrypt & Upload</button>
+
+    <div id="linkContainer"></div>
+
+    <div id="progressBarContainer" style="display:none; margin-top:1rem; width:100%; height:6px; background:#dadce0; border-radius:3px; overflow:hidden;">
+      <div id="progressBar" style="height:100%; width:0%; background:var(--primary);"></div>
+    </div>
+  </div>
+
+  <!-- JSZip for client-side zipping -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> 
