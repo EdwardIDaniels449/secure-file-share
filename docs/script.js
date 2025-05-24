@@ -106,6 +106,15 @@ uploadBtn.addEventListener('click', async () => {
 
     linkContainer.innerHTML = `Share this link: <a href="${shareURL}" target="_blank">${shareURL}</a>`;
 
+    // Generate QR code
+    const qrDiv = document.getElementById('qrContainer');
+    qrDiv.innerHTML = '';
+    new QRCode(qrDiv, {
+      text: shareURL,
+      width: 128,
+      height: 128,
+    });
+
     setTimeout(() => {
       progressContainer.style.display = 'none';
     }, 1500);
