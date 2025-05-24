@@ -5,6 +5,9 @@ const linkContainer = document.getElementById('linkContainer');
 const progressContainer = document.getElementById('progressBarContainer');
 const progressBar = document.getElementById('progressBar');
 
+// Base URL of backend API (Render deployment)
+const API_BASE = 'https://secure-file-share-auxk.onrender.com';
+
 // Helpers ----------------------------------------------------
 function arrayBufferToBase64(buffer) {
   const bytes = new Uint8Array(buffer);
@@ -72,7 +75,7 @@ uploadBtn.addEventListener('click', async () => {
 
     const id = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/api/upload');
+      xhr.open('POST', `${API_BASE}/api/upload`);
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
           const pct = Math.round((e.loaded / e.total) * 100);

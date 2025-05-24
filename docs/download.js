@@ -1,4 +1,5 @@
 (async () => {
+  const API_BASE = 'https://secure-file-share-auxk.onrender.com';
   const statusEl = document.getElementById('status');
 
   if (!location.hash) {
@@ -24,7 +25,7 @@
 
   try {
     statusEl.textContent = 'Fetching encrypted file…';
-    const response = await fetch(`/api/file/${id}`);
+    const response = await fetch(`${API_BASE}/api/file/${id}`);
     if (!response.ok) {
       statusEl.textContent = 'Link expired or file no longer available.';
       return;
