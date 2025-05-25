@@ -102,7 +102,10 @@ uploadBtn.addEventListener('click', async () => {
     // 4. Create shareable link with key & IV in URL fragment (hash)
     const keyB64 = arrayBufferToBase64(rawKey);
     const ivB64 = arrayBufferToBase64(iv);
-    const base = location.origin + location.pathname.replace(/\/[^/]*$/, '');
+    let path = location.pathname;
+    path = path.replace(/index\.html$/, '');
+    if (path.endsWith('/')) path = path.slice(0, -1);
+    const base = location.origin + path;
     const shareURL = `${base}/download.html#${id}:${keyB64}:${ivB64}`;
 
     linkContainer.innerHTML = `Share this link: <a href="${shareURL}" target="_blank">${shareURL}</a>`;
