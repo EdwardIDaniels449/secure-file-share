@@ -40,7 +40,14 @@
 
     const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBuf }, key, cipherBuf);
 
-    const fileName = decodeURIComponent(response.headers.get('X-Filename') || 'file');
+    let fileName = 'file';
+    const dispo = response.headers.get('Content-Disposition');
+    if (dispo && dispo.includes('filename=')) {
+      fileName = decodeURIComponent(dispo.split('filename=')[1].replace(/"/g,''));
+    } else {
+      const xf = response.headers.get('X-Filename');
+      if (xf) fileName = decodeURIComponent(xf);
+    }
 
     // Download
     const blob = new Blob([plainBuf]);

@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Allow CORS if you want to host frontend separately
-app.use(cors());
+app.use(cors({ exposedHeaders: ['X-Filename', 'Content-Disposition'] }));
 
 // Serve static files from /public directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -92,6 +92,7 @@ app.get('/api/file/:id', (req, res) => {
   meta.downloads += 1;
 
   res.setHeader('Content-Type', 'application/octet-stream');
+  res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(meta.filename)}"`);
   res.setHeader('X-Filename', encodeURIComponent(meta.filename));
 
   const stream = fs.createReadStream(meta.path);
