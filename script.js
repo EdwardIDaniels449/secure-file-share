@@ -102,24 +102,20 @@ uploadBtn.addEventListener('click', async () => {
     // 4. Create shareable link with key & IV in URL fragment (hash)
     const keyB64 = arrayBufferToBase64(rawKey);
     const ivB64 = arrayBufferToBase64(iv);
-    const shareURL = `${location.origin}/download.html#${id}:${keyB64}:${ivB64}`;
+    const base = location.origin + location.pathname.replace(/\/[^/]*$/, '');
+    const shareURL = `${base}/download.html#${id}:${keyB64}:${ivB64}`;
 
     linkContainer.innerHTML = `Share this link: <a href="${shareURL}" target="_blank">${shareURL}</a>`;
 
-    // Generate QR code
     const qrDiv = document.getElementById('qrContainer');
     qrDiv.innerHTML = '';
-    new QRCode(qrDiv, {
-      text: shareURL,
-      width: 128,
-      height: 128,
-    });
+    new QRCode(qrDiv, { text: shareURL, width: 128, height: 128 });
 
     setTimeout(() => {
       progressContainer.style.display = 'none';
     }, 1500);
   } catch (err) {
+    alert('An error occurred while uploading the file.');
     console.error(err);
-    alert('An error occurred during encryption or upload. See console for details.');
   }
-}); 
+});
